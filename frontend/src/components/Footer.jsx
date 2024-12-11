@@ -60,7 +60,7 @@ const Footer = () => {
 
       {/* Footer Bottom Section */}
       <div className="text-center text-gray-500 mt-8 text-sm">
-        © 2024 Your Brand Name. All rights reserved.
+        © 2024 bAsIc. All rights reserved.
       </div>
     </div>
   );

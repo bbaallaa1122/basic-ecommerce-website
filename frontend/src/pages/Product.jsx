@@ -1,24 +1,29 @@
-import React, { useContext, useState,useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { shopcontext } from "../context/Contextprovider";
 import Relatedcomponent from "../components/Relatedcomponents";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-  function handleclick(){
-      toast("Added to cart");
-  }
+
+function handleclick() {
+  toast("Added to cart");  // Show toast when an item is added to cart
+}
+
 const Product = () => {
   const { productid } = useParams();
-  const { products,addcart,addwishlist,wishlist,removewishlist} = useContext(shopcontext);
+  const { products, addcart, addwishlist, wishlist, removewishlist } = useContext(shopcontext);
+  
   // Find the product by ID
   const prod = products.find((item) => item._id === productid);
+
   // Initialize hooks
-  const [selectedImage, setSelectedImage] = useState( prod.image[0]);
+  const [selectedImage, setSelectedImage] = useState(prod.image[0]);
   const [selectedSize, setSelectedSize] = useState("");
+
   useEffect(() => {
-    setSelectedImage(prod.image[0]); 
-    setSelectedSize(""); 
-  }, [productid, prod]); 
+    setSelectedImage(prod.image[0]);
+    setSelectedSize("");
+  }, [productid, prod]);
 
   return (
     <div className="pt-20 px-8">
@@ -75,23 +80,40 @@ const Product = () => {
 
           {/* Buttons */}
           <div className="flex gap-4">
-            <button  onClick={selectedSize ===""?null:()=>{addcart({id:prod._id,size:selectedSize});handleclick()}} className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800">
+            <button
+              onClick={
+                selectedSize === ""
+                  ? null
+                  : () => {
+                      addcart({ id: prod._id, size: selectedSize });
+                      handleclick(); // Show toast after adding to cart
+                    }
+              }
+              className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800"
+            >
               Add to Cart
             </button>
 
-            <button onClick={wishlist.includes(prod._id)?()=>removewishlist({id:prod._id}):()=>addwishlist({id:prod._id})} className="border border-black px-6 py-2 rounded-lg hover:bg-gray-200">
-            {wishlist.includes(prod._id)?"Remove Wishlist":"Add to Wishlist"}
+            <button
+              onClick={
+                wishlist.includes(prod._id)
+                  ? () => removewishlist({ id: prod._id })
+                  : () => addwishlist({ id: prod._id })
+              }
+              className="border border-black px-6 py-2 rounded-lg hover:bg-gray-200"
+            >
+              {wishlist.includes(prod._id) ? "Remove Wishlist" : "Add to Wishlist"}
             </button>
           </div>
           <hr className="my-6 border-gray-300" />
           <div className="mt-10 p-5">
-        <ul className="list-disc pl-5 text-gray-500">
-          <li>100% Original Products</li>
-          <li>Easy 7-Day Returns & Exchange Policy</li>
-          <li>Fast and Reliable Shipping</li>
-          <li>Secure Online Payments</li>
-        </ul>
-      </div>
+            <ul className="list-disc pl-5 text-gray-500">
+              <li>100% Original Products</li>
+              <li>Easy 7-Day Returns & Exchange Policy</li>
+              <li>Fast and Reliable Shipping</li>
+              <li>Secure Online Payments</li>
+            </ul>
+          </div>
         </div>
       </div>
       {/* Product Description */}
@@ -101,9 +123,11 @@ const Product = () => {
       </div>
       {/* Related Products Section */}
       <Relatedcomponent
-        category={prod.category} 
-        subcategory={prod.subCategory} 
+        category={prod.category}
+        subcategory={prod.subCategory}
       />
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };
