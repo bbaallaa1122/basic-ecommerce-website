@@ -1,8 +1,8 @@
 import express from 'express';
 import { addcart, getcart, updatecart } from '../controllers/cartcontroller.js';
-import { cartauth } from '../middlewares/cartauth.js';
+import { savedauth } from '../middlewares/savedauth.js';
 const cartrouter=express.Router();
-cartrouter.post('/addcart',cartauth,addcart);
-cartrouter.post('/updatecart',cartauth,updatecart);
-cartrouter.get('/getcart',cartauth,getcart);
+cartrouter.post('/addcart',savedauth,addcart);
+cartrouter.post('/updatecart',savedauth,updatecart);
+cartrouter.get('/getcart',savedauth,getcart);
 export default cartrouter;

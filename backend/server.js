@@ -6,6 +6,7 @@ import connectcloud from './config/cloudinary.js';
 import userroutes from'./routes/userroutes.js';
 import productrouter from './routes/productroutes.js';
 import cartrouter from './routes/cartrouter.js';
+import wishlistrouter from './routes/wishlistrouter.js';
 const app=express();
 const port=5000;
 connectdb();
@@ -16,6 +17,6 @@ app.use(cors());
 app.use('/api/users/',userroutes);
 app.use('/api/products/',productrouter);
 app.use('/api/cart/',cartrouter);
-//app.use('/api/wishlist/'wishlistroutes);
+app.use('/api/wishlist/',wishlistrouter);
 
 app.listen(port,()=>console.log("server is running on port 5000"));

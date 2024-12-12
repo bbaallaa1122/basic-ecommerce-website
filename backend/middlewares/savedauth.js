@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-export const cartauth= async(req,res,next)=>{
+export const savedauth= async(req,res,next)=>{
     try{
         const token=req.headers.token;
         if(!token){

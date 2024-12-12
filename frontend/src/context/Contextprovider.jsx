@@ -26,6 +26,7 @@ export function Contextprovider(props) {
     if (token) {
       localStorage.setItem('token', token);
       getcart({token});
+      getwishlist({token});
     } else {
       localStorage.removeItem('token');  // Remove token from localStorage if it's empty
     }
@@ -151,17 +152,56 @@ export function Contextprovider(props) {
     return count;
   }
 
-  function addwishlist({ id }) {
+  async function addwishlist({ id }) {
     let wishdata = [...wishlist];
     if (!wishdata.includes(id)) {
       wishdata.push(id);
     }
     setWishlist(wishdata);
+    try{
+       const res=await axios.post('http://localhost:5000/api/wishlist/additem',{id},{
+        headers:{
+          token,
+        }
+       });
+       if(res.data.success=== false){
+         console.log(res.data.message);
+       }
+    }
+    catch(error){
+       console.log(error);
+    }
   }
 
-  function removewishlist({ id }) {
+  async function removewishlist({ id }) {
     let wishdata = wishlist.filter((item) => item !== id);
     setWishlist(wishdata);
+    try{
+      const res=await axios.post('http://localhost:5000/api/wishlist/removeitem',{id},{
+       headers:{
+         token,
+       }
+      });
+      if(res.data.success=== false){
+        console.log(res.data.message);
+      }
+   }
+   catch(error){
+      console.log(error);
+   }
+  }
+  async function getwishlist({token}){
+    const res=await axios.get('http://localhost:5000/api/wishlist/getitem',{
+      headers:{
+        token,
+      }
+     })
+     if(res.data.success){
+        setWishlist(res.data.wishlist);
+     }
+     else{
+      console.log(res.data.message);
+     }
   }
 
   function updateamount(amount) {
