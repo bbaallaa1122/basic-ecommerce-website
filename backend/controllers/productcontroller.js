@@ -73,21 +73,26 @@ export const delproduct = async (req, res) => {
   }
 };
 
+
+
+
 export const productinfo = async (req, res) => {
   try {
-    const  productId  = req.body;
+    const { productId } = req.body; 
+
+    if (!productId) {
+      return res.status(400).json({ success: false, message: "Product ID is required." });
+    }
+
     const product = await Product.findById(productId);
 
     if (!product) {
-      return res.json({success:false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: "Product not found." });
     }
 
-    res.json({
-      success:true,
-      product
-    });
+    res.status(200).json({ success: true, product });
   } catch (err) {
-    console.log(err);
-    res.json({ success:false,message: 'Error fetching product info' });
+    console.error(err);
+    res.status(500).json({ success: false, message: "Error fetching product info." });
   }
 };

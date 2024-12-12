@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Placeorder = () => {
-  const { totalamount,updateorders} = useContext(shopcontext);
+  const { totalamount,updateorders,erasecart} = useContext(shopcontext);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
     address: '',
@@ -46,6 +46,7 @@ const Placeorder = () => {
 
    
     updateorders();
+    erasecart();
     navigate('/orders');
   };
 

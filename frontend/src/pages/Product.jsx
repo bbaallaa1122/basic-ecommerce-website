@@ -2,28 +2,34 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { shopcontext } from "../context/Contextprovider";
 import Relatedcomponent from "../components/Relatedcomponents";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function handleclick() {
-  toast("Added to cart");  // Show toast when an item is added to cart
+  toast("Added to cart");
 }
 
 const Product = () => {
   const { productid } = useParams();
-  const { products, addcart, addwishlist, wishlist, removewishlist } = useContext(shopcontext);
-  
-  // Find the product by ID
-  const prod = products.find((item) => item._id === productid);
+  const { products, addcart, addwishlist, wishlist, removewishlist } =
+    useContext(shopcontext);
 
-  // Initialize hooks
-  const [selectedImage, setSelectedImage] = useState(prod.image[0]);
+  const [prod, setProd] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
 
   useEffect(() => {
-    setSelectedImage(prod.image[0]);
-    setSelectedSize("");
-  }, [productid, prod]);
+    const product = products.find((item) => item._id === productid);
+    setProd(product || null);
+    if (product) {
+      setSelectedImage(product.image?.[0] || ""); // Default to first image
+      setSelectedSize(""); // Reset size selection
+    }
+  }, [products, productid]);
+
+  if (!prod) {
+    return <p className="text-red-500">Product not found.</p>;
+  }
 
   return (
     <div className="pt-20 px-8">
@@ -57,14 +63,14 @@ const Product = () => {
         {/* Product Info */}
         <div className="w-1/2">
           <h1 className="text-3xl font-bold mb-2">{prod.name}</h1>
-          <p className="text-xl font-medium text-gray-600">${prod.price}</p>
+          <p className="text-xl font-medium text-gray-600">₹{prod.price}</p>
           <p className="text-gray-500 my-4">{prod.description}</p>
 
           {/* Size Selector */}
           <div className="mb-4">
             <label className="block font-medium mb-2">Select Size</label>
             <div className="flex gap-2">
-              {prod.sizes.map((size) => (
+              {prod.size.map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
@@ -86,10 +92,15 @@ const Product = () => {
                   ? null
                   : () => {
                       addcart({ id: prod._id, size: selectedSize });
-                      handleclick(); // Show toast after adding to cart
+                      handleclick();
                     }
               }
-              className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800"
+              className={`${
+                selectedSize === ""
+                  ? "bg-gray-300 text-gray-700 cursor-not-allowed"
+                  : "bg-black text-white hover:bg-gray-800"
+              } px-6 py-2 rounded-lg`}
+              disabled={selectedSize === ""}
             >
               Add to Cart
             </button>
@@ -110,23 +121,25 @@ const Product = () => {
             <ul className="list-disc pl-5 text-gray-500">
               <li>100% Original Products</li>
               <li>Easy 7-Day Returns & Exchange Policy</li>
-              <li>Fast and Reliable Shipping</li>
+              <li>Delivery Time: {prod.deltime} day(s)</li>
               <li>Secure Online Payments</li>
             </ul>
           </div>
         </div>
       </div>
+
       {/* Product Description */}
       <div className="mt-10">
         <h2 className="text-2xl font-bold mb-4">Description</h2>
         <p className="text-gray-600">{prod.description}</p>
       </div>
+
       {/* Related Products Section */}
       <Relatedcomponent
+       id={prod._id}
         category={prod.category}
-        subcategory={prod.subCategory}
+        subcategory={prod.subcategory}
       />
-      {/* Toast Container */}
       <ToastContainer />
     </div>
   );

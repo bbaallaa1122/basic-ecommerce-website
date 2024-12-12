@@ -1,14 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { shopcontext } from "../context/Contextprovider";
-import Productitem from "./Productitem";  // Make sure you have a Productitem component
+import Productitem from "./Productitem";  // Ensure you have a Productitem component
 
-const Relatedcomponent = ({ category, subcategory }) => {
+const Relatedcomponent = ({ id, category, subcategory }) => {
   const { products } = useContext(shopcontext);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Filter products by category and subcategory
-  const relatedProducts = products.filter(
-    (item) => item.category === category && item.subCategory === subcategory
-  );
+  useEffect(() => {
+    if (products.length > 0) {
+      // Filter products by category and subcategory, and exclude the current product by id
+      const filteredProducts = products.filter(
+        (item) =>
+          item.category === category &&
+          item.subcategory === subcategory &&
+          item._id !== id  // Exclude the current product
+      );
+      setRelatedProducts(filteredProducts);
+    }
+  }, [products, category, subcategory, id]);
 
   return (
     <div className="mt-12">

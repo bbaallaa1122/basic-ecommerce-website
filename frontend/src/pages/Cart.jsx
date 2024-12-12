@@ -1,12 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { shopcontext } from '../context/Contextprovider';
 import { MdDelete } from "react-icons/md";
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 const Cart = () => {
   const [tempcart, setTempcart] = useState([]);
-  const { cart, products, updatecart, curr, delfee,updateamount} = useContext(shopcontext);
+  const { cart, products, updatecart, curr, delfee, updateamount, token } = useContext(shopcontext);
+  const navigate = useNavigate();
+
+  // Redirect to login page if no token is found
+  useEffect(() => {
+    if (!token) {
+      navigate('/auth');
+    }
+  }, [token, navigate]);
+
   useEffect(() => {
     const temp = [];
     for (const ids in cart) {
@@ -93,15 +101,16 @@ const Cart = () => {
             <div className="flex justify-between text-xl font-semibold text-gray-800 mt-4">
               <p>Total Amount:</p>
               <p>{curr}{(totcost + delfee).toFixed(2)}</p>
-              
             </div>
           </div>
-<Link to={'/cart/placeorder'} className='cursor-pointer'>
-          <button onClick={()=>updateamount(totcost+delfee)}
-            className="w-full py-3 text-white bg-gray-500 hover:bg-gray-700 rounded-lg text-lg font-semibold transition duration-300 ease-in-out"
-          >
-            Proceed to Checkout
-          </button>
+          
+          <Link to={'/cart/placeorder'} className='cursor-pointer'>
+            <button 
+              onClick={() => updateamount(totcost + delfee)}
+              className="w-full py-3 text-white bg-gray-500 hover:bg-gray-700 rounded-lg text-lg font-semibold transition duration-300 ease-in-out"
+            >
+              Proceed to Checkout
+            </button>
           </Link>
         </div>
       )}

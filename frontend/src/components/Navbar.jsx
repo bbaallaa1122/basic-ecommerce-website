@@ -1,6 +1,6 @@
 import React from 'react';
 import { image } from '../imagefiles/image';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { FaRegHeart, FaShoppingBag } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { useContext } from 'react';
@@ -8,7 +8,21 @@ import { shopcontext } from '../context/Contextprovider';
 
 const Navbar = () => {
   const location = useLocation();
-  const {cartcount}=useContext(shopcontext);
+  const navigate = useNavigate();
+  const {setname,setCart,setemail,setpassword,cartcount, token, settoken } = useContext(shopcontext);
+    // Handle logout
+    const handleLogout = () => {
+      settoken('');   
+      setname('');  
+      setemail(''); 
+      setpassword('');
+      setCart({});
+      localStorage.removeItem('token'); 
+      navigate('/auth'); 
+    };
+
+  
+
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
       <div className="flex items-center justify-between px-5 py-4 font-medium">
@@ -42,12 +56,14 @@ const Navbar = () => {
               <CgProfile className="text-2xl" />
             </p>
             <div className="absolute right-0 hidden group-hover:block bg-white shadow-lg rounded-md py-3 w-48 text-gray-700 z-10 transition ease-in-out duration-200">
-              <NavLink
-                to="/auth"
-                className="block px-4 py-2 hover:bg-gray-100 hover:text-black"
-              >
-                Login/Signup
-              </NavLink>
+              {!token && (
+                <NavLink
+                  to="/auth"
+                  className="block px-4 py-2 hover:bg-gray-100 hover:text-black"
+                >
+                  Login/Signup
+                </NavLink>
+              )}
               <NavLink
                 to="/orders"
                 className="block px-4 py-2 hover:bg-gray-100 hover:text-black"
@@ -66,9 +82,14 @@ const Navbar = () => {
               >
                 Contact
               </NavLink>
-              <p className="block px-4 py-2 hover:bg-gray-100 hover:text-black cursor-pointer">
-                Logout
-              </p>
+              {token && (
+                <p
+                  onClick={handleLogout} // Handle logout on click
+                  className="block px-4 py-2 hover:bg-gray-100 hover:text-black cursor-pointer"
+                >
+                  Logout
+                </p>
+              )}
             </div>
           </li>
 

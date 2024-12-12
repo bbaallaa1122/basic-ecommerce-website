@@ -1,25 +1,30 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { shopcontext } from "../context/Contextprovider";
 import Productitem from "./Productitem";
 
-const Productspage = ({name}) => {
-  const { products,searchitem} = useContext(shopcontext);
-  
+const Productspage = ({ name }) => {
+  const { products, searchitem } = useContext(shopcontext);
+
   // Filters State
   const [type, setType] = useState(""); // topwear, bottomwear, winterwear
   const [priceRange, setPriceRange] = useState([100, 400]);
   const [bestseller, setBestseller] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-  // Filter Logic
-  const menproducts = products
-    .filter((item)=>item.name.toLowerCase().includes(searchitem.toLowerCase()))
-    .filter((item) => item.category === name)
-    .filter((item) => (type ? item.subCategory === type : true))
-    .filter((item) => item.price >= priceRange[0] && item.price <= priceRange[1])
-    .filter((item) => (bestseller ? item.bestseller === true : true));
+  // Update filtered products dynamically
+  useEffect(() => {
+    const filtered = products
+      .filter((item) => item.name.toLowerCase().includes(searchitem.toLowerCase()))
+      .filter((item) => item.category === name)
+      .filter((item) => (type ? item.subCategory === type : true))
+      .filter((item) => item.price >= priceRange[0] && item.price <= priceRange[1])
+      .filter((item) => (bestseller ? item.bestseller === true : true));
+
+    setFilteredProducts(filtered);
+  }, [products, searchitem, name, type, priceRange, bestseller]);
 
   return (
-    <div className=" flex flex-col lg:flex-row px-8 bg-gray-50 min-h-screen">
+    <div className="flex flex-col lg:flex-row px-8 bg-gray-50 min-h-screen">
       {/* Filter Box */}
       <div className="w-full lg:w-1/4 bg-white p-5 rounded-lg shadow-lg mb-5 lg:mb-0">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
@@ -86,8 +91,8 @@ const Productspage = ({name}) => {
 
       {/* Products Grid */}
       <div className="w-full lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 p-10 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {menproducts.length > 0 ? (
-          menproducts.map((item) => (
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((item) => (
             <Productitem
               key={item._id}
               id={item._id}
