@@ -6,7 +6,8 @@ const userschema = new mongoose.Schema({
     password: { type: String, required: true },
     cart: { type: Object, default: {}, minimize: false }, 
     wishlist: { type: Array, default: [],minimize: false  }, 
-}, { minimize: false }); // Optional: Remove if not required globally
+    orders:{ type:Array,default:[] ,minimize:false},
+}, { minimize: false }); 
 
 const usermodel = mongoose.models.user || mongoose.model('user', userschema);
 

@@ -27,6 +27,7 @@ export function Contextprovider(props) {
       localStorage.setItem('token', token);
       getcart({token});
       getwishlist({token});
+      getorders({token});
     } else {
       localStorage.removeItem('token');  // Remove token from localStorage if it's empty
     }
@@ -82,7 +83,7 @@ export function Contextprovider(props) {
   }
   
 
-  function updateorders() {
+  async function updateorders() {
     let temporders = structuredClone(orders);
     for (const ids in cart) {
       for (const sizes in cart[ids]) {
@@ -102,14 +103,51 @@ export function Contextprovider(props) {
       }
     }
     setOrders(temporders);
+    try {
+      const res=await axios.get('http://localhost:5000/api/cart/placeorder',{
+        headers:{
+          token,
+        },
+       })
+    console.log(res.data);
+      if (res.data.success === false) {
+        console.log(res.data.message); 
+      }
+    } catch (error) {
+      console.error('Failed to place order:', error.message); 
+    }
   }
-
-  function cancelorders(index) {
+  async function cancelorders(index) {
     let updatedOrders = [...orders];
     updatedOrders.splice(index, 1);
     setOrders(updatedOrders);
+    try {
+      const res = await axios.post('http://localhost:5000/api/cart/cancelorder',{index},{
+        headers: {
+          token, 
+        },
+      });
+    console.log(res.data);
+      if (res.data.success === false) {
+        console.log(res.data.message); 
+      }
+    } catch (error) {
+      console.error('Failed to cancelorder ', error.message); 
+    }
   }
-
+  async function getorders({token}){
+    const res=await axios.get('http://localhost:5000/api/cart/getorders',{
+     headers:{
+       token,
+     }
+    })
+    if(res.data.success){
+       setOrders(res.data.orders);
+    }
+    else{
+     console.log(res.data.message);
+    }
+}
   async function updatecart({ id, size, quantity }) {
     let cartdata = structuredClone(cart);
     if (quantity === 0) {

@@ -17,7 +17,6 @@ const Placeorder = () => {
     country: '',
     additionalNotes: '',
   });
-
   const [paymentSelected, setPaymentSelected] = useState(false);
   const [buttonClass, setButtonClass] = useState("w-auto py-2 px-4 text-white bg-gray-400 rounded-lg text-sm");
   const navigate = useNavigate();
