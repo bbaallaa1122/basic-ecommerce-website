@@ -21,7 +21,6 @@ export const addcart = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
-
 export const updatecart = async (req, res) => {
     try {
         const { userid,itemid, size, quantity } = req.body;
@@ -50,34 +49,27 @@ export const getcart = async (req, res) => {
 };
 export const placeorder =async(req,res)=>{
     try{
-        const { userid } = req.body;
-        const userdata = await usermodel.findById(userid);
-        const cart = { ...userdata.cart };
-        const temporders = userdata.orders || []; // Ensure orders exist
-        
-        for (const ids in cart) {
-          for (const sizes in cart[ids]) {
-            const today = new Date();
-            
-            // Await the async call to fetch product data
-            const product = await productmodel.findById(ids);
-        
-            if (product) {
-              const del = product.deltime; // Ensure deltime is a valid number
-              today.setDate(today.getDate() + del); // Add delivery time
-              const date = today.toISOString().split('T')[0]; // Format date
-              
-              temporders.push({
-                id: ids,
-                size: sizes,
-                quantity: cart[ids][sizes],
-                deldate: date,
-              });
-            } else {
-              console.error(`Product with ID ${ids} not found`);
-            }
+       const {userid}=req.body;
+       const userdata = await usermodel.findById(userid);
+       const cart = { ...userdata.cart };
+       const temporders=userdata.orders;
+       for (const ids in cart) {
+        for (const sizes in cart[ids]) {
+          const today = new Date();
+          const product = productmodel.findById(ids);
+          if (product) {
+            const del = product.deltime;
+            today.setDate(today.getDate() + del);
+            const date = today.toISOString().split('T')[0];
+            temporders.push({
+              id: ids,
+              size: sizes,
+              quantity: cart[ids][sizes],
+              deldate: date,
+            });
           }
         }
+      }
       await usermodel.findByIdAndUpdate(userid, { orders:temporders});
       await usermodel.findByIdAndUpdate(userid, { cart:{}});
       res.json({success:true,message:"orders placed successfully"});

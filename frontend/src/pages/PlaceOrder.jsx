@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { assets } from '../assests/assets';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const Placeorder = () => {
-  const { totalamount,updateorders,erasecart} = useContext(shopcontext);
+  const { cart,token,products,totalamount,updateorders,erasecart} = useContext(shopcontext);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
     address: '',
@@ -31,24 +32,63 @@ const Placeorder = () => {
     setDeliveryInfo({ ...deliveryInfo, [name]: value });
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     const { name, address, phone, email, city, postalCode, country } = deliveryInfo;
+  
+    // Validate delivery information
     if (!name || !address || !phone || !email || !city || !postalCode || !country) {
       toast.warn('Please fill in all delivery information.');
       return;
     }
-
+  
+    // Validate payment selection
     if (!paymentSelected) {
       toast.warn('Please select a payment option.');
       return;
     }
-
-   
-    updateorders();
-    erasecart();
-    navigate('/orders');
+  
+    try {
+      // Construct orders from the cart
+      const tempOrders = [];
+      for (const ids in cart) {
+        for (const sizes in cart[ids]) {
+          const today = new Date();
+          const product = products.find((item) => item._id === ids);
+          if (product) {
+            const del = product.deltime; // Fetch delivery time from product
+            today.setDate(today.getDate() + del);
+            const deldate = today.toISOString().split('T')[0]; // Format delivery date
+  
+            tempOrders.push({
+              productid: ids,
+              size: sizes,
+              quantity: cart[ids][sizes],
+              address: { ...deliveryInfo }, // Spread delivery info into address
+              deldate,
+            });
+          }
+        }
+      }
+      // Send orders to the backend
+  const res = await axios.post('http://localhost:5000/api/orders/updateorder',{tempOrders},{
+    headers:{
+      token,
+    }
+  });
+    console.log(res.data);
+      if (res.data.success) {
+        updateorders(); 
+        erasecart(); 
+        navigate('/orders'); 
+      } else {
+        toast.error(`Failed to place order: ${res.data.message}`);
+      }
+    } catch (error) {
+      console.error('Error placing order:', error);
+      toast.error('Something went wrong while placing the order.');
+    }
   };
-
+  
   return (
     <div className="pt-20 px-6 min-h-screen bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 flex flex-col justify-center items-center font-poppins">
       {/* Toast Container */}

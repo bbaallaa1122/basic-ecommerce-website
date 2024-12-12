@@ -7,6 +7,7 @@ import userroutes from'./routes/userroutes.js';
 import productrouter from './routes/productroutes.js';
 import cartrouter from './routes/cartrouter.js';
 import wishlistrouter from './routes/wishlistrouter.js';
+import orderrouter from './routes/orderroutes.js';
 const app=express();
 const port=5000;
 connectdb();
@@ -18,5 +19,6 @@ app.use('/api/users/',userroutes);
 app.use('/api/products/',productrouter);
 app.use('/api/cart/',cartrouter);
 app.use('/api/wishlist/',wishlistrouter);
+app.use('/api/orders/',orderrouter);
 
 app.listen(port,()=>console.log("server is running on port 5000"));

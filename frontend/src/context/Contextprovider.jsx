@@ -118,23 +118,52 @@ export function Contextprovider(props) {
     }
   }
   async function cancelorders(index) {
-    let updatedOrders = [...orders];
-    updatedOrders.splice(index, 1);
-    setOrders(updatedOrders);
     try {
-      const res = await axios.post('http://localhost:5000/api/cart/cancelorder',{index},{
-        headers: {
-          token, 
-        },
-      });
-    console.log(res.data);
-      if (res.data.success === false) {
-        console.log(res.data.message); 
+      // Update local state to optimistically remove the order
+      let updatedOrders = [...orders];
+      updatedOrders.splice(index, 1);
+      setOrders(updatedOrders);
+  
+      // First API call: Cancel order from the cart
+      const cartResponse = await axios.post(
+        'http://localhost:5000/api/cart/cancelorder',
+        { index },
+        {
+          headers: {
+            token, // Ensure the token is valid
+          },
+        }
+      );
+  
+      if (!cartResponse.data.success) {
+        console.log('Cart cancellation failed:', cartResponse.data.message);
+      } else {
+        console.log('Cart cancellation successful:', cartResponse.data);
+      }
+  
+      // Second API call: Cancel order from the orders database
+      const ordersResponse = await axios.post(
+        'http://localhost:5000/api/orders/cancelorder',
+        { index }, // Include additional data if required by backend
+        {
+          headers: {
+            token, // Ensure the token is valid
+          },
+        }
+      );
+  
+      if (!ordersResponse.data.success) {
+        console.log('Order cancellation failed:', ordersResponse.data.message);
+      } else {
+        console.log('Order cancellation successful:', ordersResponse.data);
       }
     } catch (error) {
-      console.error('Failed to cancelorder ', error.message); 
+      console.error('Failed to cancel order:', error.message);
+      // Optionally rollback optimistic UI update if needed
+      setOrders(orders);
     }
   }
+  
   async function getorders({token}){
     const res=await axios.get('http://localhost:5000/api/cart/getorders',{
      headers:{
