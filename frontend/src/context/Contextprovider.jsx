@@ -170,6 +170,7 @@ export function Contextprovider(props) {
        token,
      }
     })
+    console.log(res.data);
     if(res.data.success){
        setOrders(res.data.orders);
     }
@@ -274,14 +275,6 @@ export function Contextprovider(props) {
   function updateamount(amount) {
     settotalamount(amount);
   }
-  
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
-
-  useEffect(() => {
-    console.log(wishlist);
-  }, [wishlist]);
 
   const value = {
     products,
