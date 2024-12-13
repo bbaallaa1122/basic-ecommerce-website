@@ -51,24 +51,26 @@ export const updateorders = async (req, res) => {
   };
   export const cancelorder = async (req, res) => {
     try {
-      const { userid, orderId } = req.body;
-  
-      if (!orderId) {
-        return res.status(400).json({ success: false, message: 'Order ID is required' });
+      const { userid, index } = req.body;
+      if (index === undefined) {
+        return res.status(400).json({ success: false, message: 'Index is required' });
       }
-  
-      // Verify the order belongs to the user
-      const orderToDelete = await ordermodel.findOne({ _id: orderId, userid });
-      if (!orderToDelete) {
-        return res.status(404).json({ success: false, message: 'Order not found or unauthorized' });
+      const userOrders = await ordermodel.find({ userid });
+      console.log('User Orders:', userOrders);
+      if (!userOrders || userOrders.length === 0) {
+        return res.status(404).json({ success: false, message: 'No orders found' });
       }
+      if (index < 0 || index >= userOrders.length) {
+        return res.status(400).json({ success: false, message: 'Invalid index' });
+      }
+      const orderToDelete = userOrders[index];
+      console.log('Order to delete:', orderToDelete);
+      await ordermodel.findByIdAndDelete(orderToDelete._id);
   
-      // Delete the order
-      await ordermodel.findByIdAndDelete(orderId);
       res.status(200).json({ success: true, message: 'Order canceled successfully!' });
     } catch (error) {
       console.error('Error canceling order:', error.message);
-      res.status(500).json({ success: false, message: 'Failed to cancel the order' });
+      res.status(500).json({ success: false, message: 'Faid to cancel the order' });
     }
   };
   

@@ -134,7 +134,7 @@ export function Contextprovider(props) {
           },
         }
       );
-  
+
       if (!cartResponse.data.success) {
         console.log('Cart cancellation failed:', cartResponse.data.message);
       } else {
@@ -144,14 +144,13 @@ export function Contextprovider(props) {
       // Second API call: Cancel order from the orders database
       const ordersResponse = await axios.post(
         'http://localhost:5000/api/orders/cancelorder',
-        { index }, // Include additional data if required by backend
+        { index },
         {
           headers: {
-            token, // Ensure the token is valid
+            token, 
           },
         }
       );
-  
       if (!ordersResponse.data.success) {
         console.log('Order cancellation failed:', ordersResponse.data.message);
       } else {
@@ -159,8 +158,6 @@ export function Contextprovider(props) {
       }
     } catch (error) {
       console.error('Failed to cancel order:', error.message);
-      // Optionally rollback optimistic UI update if needed
-      setOrders(orders);
     }
   }
   

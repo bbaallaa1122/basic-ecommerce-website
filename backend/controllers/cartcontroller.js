@@ -86,11 +86,11 @@ export const placeorder = async (req, res) => {
           }
         }
       }
-  
+
       // Update user's orders and cart
       await usermodel.findByIdAndUpdate(userid, { orders: temporders });
       await usermodel.findByIdAndUpdate(userid, { cart: {} });
-      res.json({ success: true, message: 'Orders placed successfully' });
+      res.json({ success: true,message: 'Orders placed successfully' });
   
     } catch (error) {
       res.json({ success: false, message: error.message });
