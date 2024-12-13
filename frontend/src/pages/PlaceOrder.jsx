@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 const Placeorder = () => {
-  const { cart,token,products,totalamount,updateorders,erasecart} = useContext(shopcontext);
+  const { backend,cart,token,products,totalamount,updateorders,erasecart} = useContext(shopcontext);
   const [deliveryInfo, setDeliveryInfo] = useState({
     name: '',
     address: '',
@@ -70,7 +70,7 @@ const Placeorder = () => {
         }
       }
       // Send orders to the backend
-  const res = await axios.post('http://localhost:5000/api/orders/updateorder',{tempOrders},{
+  const res = await axios.post(`${backend}/api/orders/updateorder`,{tempOrders},{
     headers:{
       token,
     }

@@ -8,6 +8,7 @@ export function Contextprovider(props) {
   const curr = '$';
   const navigate = useNavigate();
   const delfee = 10;
+  const backend = process.env.REACT_APP_backend;
   const [products, setProducts] = useState([]);
   const [searchitem, setSearchitem] = useState('');
   const [cart, setCart] = useState({});
@@ -28,6 +29,7 @@ export function Contextprovider(props) {
       getcart({token});
       getwishlist({token});
       getorders({token});
+      console.log(backend);
     } else {
       localStorage.removeItem('token');  // Remove token from localStorage if it's empty
     }
@@ -36,7 +38,7 @@ export function Contextprovider(props) {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get("http://localhost:5000/api/products/listproduct");
+        const response = await axios.get(`${backend}/api/products/listproduct`);
         setProducts(response.data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -68,7 +70,7 @@ export function Contextprovider(props) {
   
     try {
       // Send the updated cart item to the backend
-      const res = await axios.post('http://localhost:5000/api/cart/addcart', { itemid, size }, {
+      const res = await axios.post(`${backend}/api/cart/addcart`, { itemid, size }, {
         headers: {
           token, 
         },
@@ -104,7 +106,7 @@ export function Contextprovider(props) {
     }
     setOrders(temporders);
     try {
-      const res=await axios.get('http://localhost:5000/api/cart/placeorder',{
+      const res=await axios.get(`${backend}/api/cart/placeorder`,{
         headers:{
           token,
         },
@@ -126,7 +128,7 @@ export function Contextprovider(props) {
   
       // First API call: Cancel order from the cart
       const cartResponse = await axios.post(
-        'http://localhost:5000/api/cart/cancelorder',
+        `${backend}/api/cart/cancelorder`,
         { index },
         {
           headers: {
@@ -143,7 +145,7 @@ export function Contextprovider(props) {
   
       // Second API call: Cancel order from the orders database
       const ordersResponse = await axios.post(
-        'http://localhost:5000/api/orders/cancelorder',
+        `${backend}/api/orders/cancelorder`,
         { index },
         {
           headers: {
@@ -162,7 +164,7 @@ export function Contextprovider(props) {
   }
   
   async function getorders({token}){
-    const res=await axios.get('http://localhost:5000/api/cart/getorders',{
+    const res=await axios.get(`${backend}/api/cart/getorders`,{
      headers:{
        token,
      }
@@ -184,7 +186,7 @@ export function Contextprovider(props) {
     }
     setCart(cartdata);
     const itemid=id;
-    const res=await axios.post('http://localhost:5000/api/cart/updatecart',{itemid,size,quantity},{
+    const res=await axios.post(`${backend}/api/cart/updatecart`,{itemid,size,quantity},{
       headers:{
         token,
       }
@@ -195,7 +197,7 @@ export function Contextprovider(props) {
     }
   }
   async function getcart({token}){
-     const res=await axios.get('http://localhost:5000/api/cart/getcart',{
+     const res=await axios.get(`${backend}/api/cart/getcart`,{
       headers:{
         token,
       }
@@ -224,7 +226,7 @@ export function Contextprovider(props) {
     }
     setWishlist(wishdata);
     try{
-       const res=await axios.post('http://localhost:5000/api/wishlist/additem',{id},{
+       const res=await axios.post(`${backend}/api/wishlist/additem`,{id},{
         headers:{
           token,
         }
@@ -242,7 +244,7 @@ export function Contextprovider(props) {
     let wishdata = wishlist.filter((item) => item !== id);
     setWishlist(wishdata);
     try{
-      const res=await axios.post('http://localhost:5000/api/wishlist/removeitem',{id},{
+      const res=await axios.post(`${backend}/api/wishlist/removeitem`,{id},{
        headers:{
          token,
        }
@@ -256,7 +258,7 @@ export function Contextprovider(props) {
    }
   }
   async function getwishlist({token}){
-    const res=await axios.get('http://localhost:5000/api/wishlist/getitem',{
+    const res=await axios.get(`${backend}/api/wishlist/getitem`,{
       headers:{
         token,
       }
@@ -304,7 +306,8 @@ export function Contextprovider(props) {
     email,
     setemail,
     password,
-    setpassword
+    setpassword,
+    backend,
   };
 
   return (

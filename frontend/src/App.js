@@ -15,7 +15,6 @@ import Footer from './components/Footer';
 import Product from './pages/Product';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 const App = () => {
   return (
     <div>

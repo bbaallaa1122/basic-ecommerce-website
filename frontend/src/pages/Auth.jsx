@@ -4,7 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 const Auth = () => {
   const [curstate, setCurstate] = useState("signup");
-  const {token, settoken,navigate} = useContext(shopcontext);
+  const {token,backend, settoken,navigate} = useContext(shopcontext);
   const [name, setname] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -13,7 +13,7 @@ const Auth = () => {
     try {
       const form=e.target;
       if (curstate === 'signup') {
-        const res = await axios.post("http://localhost:5000/api/users/register", { name, email, password });
+        const res = await axios.post(`${backend}/api/users/register`, { name, email, password });
         if (res.data.success) {
           setname("");
           setemail("");
@@ -25,7 +25,7 @@ const Auth = () => {
           toast.error(res.data.message);
         }
       } else {
-        const res = await axios.post("http://localhost:5000/api/users/login", { email, password });
+        const res = await axios.post(`${backend}/api/users/login`, { email, password });
         if (res.data.success) {
           settoken(res.data.token);
           localStorage.setItem('token', res.data.token);
