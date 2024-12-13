@@ -2,6 +2,7 @@ import usermodel from '../models/usermodel.js'
 import validator from 'validator';
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcryptjs';
+import gOPD from 'gopd';
 
 const createtoken=(id)=>{
   return jwt.sign({id},process.env.jsonsecret);
