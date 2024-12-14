@@ -63,9 +63,8 @@ const Product = () => {
         {/* Product Info */}
         <div className="w-1/2">
           <h1 className="text-3xl font-bold mb-2">{prod.name}</h1>
-          <p className="text-xl font-medium text-gray-600">₹{prod.price}</p>
+          <p className="text-xl font-medium text-gray-600">${prod.price}</p>
           <p className="text-gray-500 my-4">{prod.description}</p>
-
           {/* Size Selector */}
           <div className="mb-4">
             <label className="block font-medium mb-2">Select Size</label>

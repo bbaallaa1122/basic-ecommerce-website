@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from './Layout.js';
-import { FaClipboardList, FaBoxOpen, FaChartLine, FaCogs } from 'react-icons/fa';
+import { FaClipboardList, FaBoxOpen, FaChartLine } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom'; // For navigation
 
 const Adminpanel = () => {
@@ -28,39 +28,45 @@ const Adminpanel = () => {
         <p className="text-xl text-center mb-8">Manage your items and orders from here.</p>
 
         {/* Quick Action Buttons */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg text-center">
+        <div className="flex justify-center items-center gap-6 mb-12">
+          <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg text-center flex flex-col items-center">
             <FaClipboardList size={30} />
             <h2 className="mt-4 text-2xl font-semibold">Manage Products</h2>
             <p className="mt-2">View, add, and edit your products</p>
-            <button
-              onClick={handleManageProducts}
-              className="mt-4 bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-md text-white"
-            >
-              Manage
-            </button>
+            <div className="flex justify-center items-center mt-4">
+              <button
+                onClick={handleManageProducts}
+                className="bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-md text-white"
+              >
+                Manage
+              </button>
+            </div>
           </div>
-          <div className="bg-green-600 text-white p-6 rounded-lg shadow-lg text-center">
+          <div className="bg-green-600 text-white p-6 rounded-lg shadow-lg text-center flex flex-col items-center">
             <FaBoxOpen size={30} />
             <h2 className="mt-4 text-2xl font-semibold">View Orders</h2>
             <p className="mt-2">Track customer orders and manage status</p>
-            <button
-              onClick={handleViewOrders}
-              className="mt-4 bg-green-700 hover:bg-green-800 px-4 py-2 rounded-md text-white"
-            >
-              View Orders
-            </button>
+            <div className="flex justify-center items-center mt-4">
+              <button
+                onClick={handleViewOrders}
+                className="bg-green-700 hover:bg-green-800 px-4 py-2 rounded-md text-white"
+              >
+                View Orders
+              </button>
+            </div>
           </div>
-          <div className="bg-purple-600 text-white p-6 rounded-lg shadow-lg text-center">
+          <div className="bg-purple-600 text-white p-6 rounded-lg shadow-lg text-center flex flex-col items-center">
             <FaChartLine size={30} />
             <h2 className="mt-4 text-2xl font-semibold">Analytics</h2>
             <p className="mt-2">View product statistics and insights</p>
-            <button
-              onClick={handleAnalytics}
-              className="mt-4 bg-purple-700 hover:bg-purple-800 px-4 py-2 rounded-md text-white"
-            >
-              Go to Analytics
-            </button>
+            <div className="flex justify-center items-center mt-4">
+              <button
+                onClick={handleAnalytics}
+                className="bg-purple-700 hover:bg-purple-800 px-4 py-2 rounded-md text-white"
+              >
+                Go to Analytics
+              </button>
+            </div>
           </div>
         </div>
       </div>

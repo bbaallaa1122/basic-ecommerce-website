@@ -108,7 +108,7 @@ const Placeorder = () => {
               value={deliveryInfo.name}
               onChange={handleChange}
               className="w-full px-6 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-              placeholder="John Doe"
+              placeholder="enter city name"
             />
           </div>
           <div className="space-y-2">
@@ -120,7 +120,7 @@ const Placeorder = () => {
               value={deliveryInfo.address}
               onChange={handleChange}
               className="w-full px-6 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-              placeholder="123 Street, City, State"
+              placeholder="enter address"
             />
           </div>
           <div className="space-y-2">
@@ -132,7 +132,7 @@ const Placeorder = () => {
               value={deliveryInfo.phone}
               onChange={handleChange}
               className="w-full px-6 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-              placeholder="123-456-7890"
+              placeholder="enter mobile number"
             />
           </div>
           <div className="space-y-2">
@@ -144,7 +144,7 @@ const Placeorder = () => {
               value={deliveryInfo.email}
               onChange={handleChange}
               className="w-full px-6 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-              placeholder="example@mail.com"
+              placeholder="example@gmail.com"
             />
           </div>
 
@@ -171,7 +171,7 @@ const Placeorder = () => {
                 value={deliveryInfo.postalCode}
                 onChange={handleChange}
                 className="w-full px-6 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-                placeholder="12345"
+                placeholder="enter postal code"
               />
             </div>
             <div className="w-1/3 space-y-2">

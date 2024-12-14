@@ -16,7 +16,7 @@ const Productspage = ({ name }) => {
     const filtered = products
       .filter((item) => item.name.toLowerCase().includes(searchitem.toLowerCase()))
       .filter((item) => item.category === name)
-      .filter((item) => (type ? item.subCategory === type : true))
+      .filter((item) => (type ? item.subcategory === type : true))
       .filter((item) => item.price >= priceRange[0] && item.price <= priceRange[1])
       .filter((item) => (bestseller ? item.bestseller === true : true));
 

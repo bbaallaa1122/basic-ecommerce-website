@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom'; 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import Layout from './Layout';
 
 function Additem({ items, setItems }) {
   const location = useLocation(); // Retrieve location state
+  const navigate = useNavigate();
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
@@ -79,6 +80,7 @@ function Additem({ items, setItems }) {
         setItems((prevItems) => [...prevItems, data.product]);
         toast.success(data.message || 'Item added successfully!');
         resetForm();
+        navigate('/listitems');
       } else {
         toast.error(data.message || 'Error adding product!');
       }

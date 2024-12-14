@@ -132,8 +132,9 @@ export const listproductadmin = async (req, res) => {
 
     // Send the filtere.d products as the response
     return res.json({
+      success:true,
       message: 'Products retrieved successfully!',
-      products
+      products,
     });
   } catch (err) {
     console.log(err);

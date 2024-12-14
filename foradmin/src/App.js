@@ -14,12 +14,7 @@ import axios from 'axios';
 function App() {
   const [items, setItems] = useState([]); // Items state to track the items
   const [orders, setOrders] = useState([]); // Orders state to track orders
-  const [token, setToken] = useState(null);
-  const [categoryProductCount, setCategoryProductCount] = useState({
-    Men: 0,
-    Women: 0,
-    Kids: 0,
-  });
+  const [token, setToken] = useState( localStorage.getItem('token'));
   
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -56,7 +51,8 @@ function App() {
   // Login function to set the token
   const login = (newToken) => {
     setToken(newToken);
-    localStorage.setItem('token', newToken); // Save token to local storage
+    localStorage.setItem('token', newToken);
+     // Save token to local storage
   };
 
   // Logout function to clear the token
@@ -67,32 +63,24 @@ function App() {
   };
 
   // Update the product count based on category (Men, Women, Kids)
-  const updateProductCount = (products) => {
-    const count = { Men: 0, Women: 0, Kids: 0 };
-    products.forEach((item) => {
-      if (item.category === 'Men') {
-        count.Men++;
-      } else if (item.category === 'Women') {
-        count.Women++;
-      } else if (item.category === 'Kids') {
-        count.Kids++;
-      }
-    });
-    setCategoryProductCount(count); // Update the state with the new counts
-  };
+
 
   // Fetch items from API and update the product count
   useEffect(() => {
     const fetchItems = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/products/listproduct');
-        setItems(response.data.products);
-        updateProductCount(response.data.products); // Update product count after fetching items
-      } catch (error) {
-        toast.error('Error fetching items');
-      }
+        try {
+          const response = await axios.get('http://localhost:5000/api/products/listproductadmin', {
+            headers: {
+              token,
+            },
+          });
+          setItems(response.data.products);
+        }catch (error) {
+          if(token){
+          toast.error('Error fetching items');
+          console.log(error.message);}
+        }
     };
-
     fetchItems();
   }, []); // Run this effect only once on component mount
 
@@ -109,10 +97,7 @@ function App() {
             path="/analytics"
             element={token ? (
               <Analytics 
-                orders={orders} 
-                menItems={categoryProductCount.Men} 
-                womenItems={categoryProductCount.Women} 
-                kidsItems={categoryProductCount.Kids} 
+                orders={orders}
               />
             ) : <Navigate to="/login" />}
           />

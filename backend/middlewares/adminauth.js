@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 export const adminauth=async(req,res,next)=>{
     try{
-    const token =req.headers.token;
+    const {token}=req.headers;
     if(!token){
         return res.json({success:false,message:"admin not authorized"});
     }
