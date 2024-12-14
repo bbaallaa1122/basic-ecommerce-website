@@ -1,26 +1,29 @@
 import React, { useState, useCallback } from 'react';
-import { toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
-import axios from 'axios'; 
+import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 import Layout from './Layout';
 
 function Additem({ items, setItems }) {
+  const location = useLocation(); // Retrieve location state
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
-  const [images, setImages] = useState([]); // Multiple images state
-  const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
-  const [sizes, setSizes] = useState([]); 
-  const [deliveryDate, setDeliveryDate] = useState(1); 
-  const [isBestseller, setIsBestseller] = useState(false); 
-  const [isLoading, setIsLoading] = useState(false); 
-  const token = localStorage.getItem('token'); 
+  const [images, setImages] = useState([]);
+  const [category, setCategory] = useState(location.state?.category || ''); // Initialize with location state
+  const [subcategory, setSubcategory] = useState(location.state?.subcategory || '');
+  const [sizes, setSizes] = useState([]);
+  const [deliveryDate, setDeliveryDate] = useState(1);
+  const [isBestseller, setIsBestseller] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const token = localStorage.getItem('token');
+
   const resetForm = () => {
     setItemName('');
     setItemDescription('');
     setItemPrice('');
-    setImages([]);  // Reset images array
+    setImages([]);
     setCategory('');
     setSubcategory('');
     setSizes([]);
@@ -59,9 +62,8 @@ function Additem({ items, setItems }) {
     formData.append('deltime', deliveryDate);
     formData.append('bestseller', isBestseller);
 
-    // Append all selected images to FormData
     images.forEach((image, index) => {
-      formData.append(`image${index + 1}`, image); 
+      formData.append(`image${index + 1}`, image);
     });
 
     setIsLoading(true);
@@ -73,13 +75,12 @@ function Additem({ items, setItems }) {
         },
       });
       const data = response.data;
-      console.log(data.product);
       if (data.success) {
-        setItems((prevItems) => [...prevItems, data.product]); 
-        toast.success(data.message || "Item added successfully!");
+        setItems((prevItems) => [...prevItems, data.product]);
+        toast.success(data.message || 'Item added successfully!');
         resetForm();
       } else {
-        toast.error(data.message || "Error adding product!"); 
+        toast.error(data.message || 'Error adding product!');
       }
     } catch (error) {
       if (error.response) {
@@ -100,14 +101,12 @@ function Additem({ items, setItems }) {
       return;
     }
 
-    // Check for valid image types
-    const validImages = selectedImages.filter(image => image.type.startsWith('image/'));
+    const validImages = selectedImages.filter((image) => image.type.startsWith('image/'));
     if (validImages.length !== selectedImages.length) {
       toast.error('Only image files are allowed!');
       return;
     }
 
-    // Update state with selected images
     setImages((prevImages) => [...prevImages, ...validImages]);
   };
 
@@ -137,147 +136,132 @@ function Additem({ items, setItems }) {
   }, []);
 
   return (
-     <Layout>
-    <div className="mt-20 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4">Add New Item</h2>
-      <div className="space-y-4">
-        <input
-          type="text"
-          placeholder="Item Name"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-          required
-        />
-        <textarea
-          placeholder="Item Description"
-          value={itemDescription}
-          onChange={(e) => setItemDescription(e.target.value)}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-          required
-        />
-        <input
-          type="number"
-          placeholder="Item Price"
-          value={itemPrice}
-          onChange={(e) => setItemPrice(e.target.value)}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-          required
-        />
-
-        {/* Category Select */}
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-          required
-        >
-          <option value="">Select Category</option>
-          <option value="Men">Men</option>
-          <option value="Women">Women</option>
-          <option value="Kids">Kids</option>
-        </select>
-
-        {/* Subcategory Select */}
-        {category && (
+    <Layout>
+      <div className="mt-20 p-6 bg-white rounded-lg shadow-md">
+        <h2 className="text-2xl font-semibold mb-4">Add New Item</h2>
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Item Name"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+          />
+          <textarea
+            placeholder="Item Description"
+            value={itemDescription}
+            onChange={(e) => setItemDescription(e.target.value)}
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+          />
+          <input
+            type="number"
+            placeholder="Item Price"
+            value={itemPrice}
+            onChange={(e) => setItemPrice(e.target.value)}
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+          />
           <select
-            value={subcategory}
-            onChange={(e) => setSubcategory(e.target.value)}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
             className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
             required
           >
-            <option value="">Select Subcategory</option>
-            {category === 'Men' && (
-              <>
-                <option value="Topwear">Topwear</option>
-                <option value="Bottomwear">Bottomwear</option>
-                <option value="Winterwear">Winterwear</option>
-              </>
-            )}
-            {category === 'Women' && (
-              <>
-                <option value="Topwear">Topwear</option>
-                <option value="Bottomwear">Bottomwear</option>
-                <option value="Winterwear">Winterwear</option>
-              </>
-            )}
-            {category === 'Kids' && (
-              <>
-                <option value="Topwear">Topwear</option>
-                <option value="Bottomwear">Bottomwear</option>
-                <option value="Winterwear">Winterwear</option>
-              </>
-            )}
+            <option value="">Select Category</option>
+            <option value="Men">Men</option>
+            <option value="Women">Women</option>
+            <option value="Kids">Kids</option>
           </select>
-        )}
-
-        {/* Size Selection */}
-        <div className="flex space-x-4">
-          {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
-            <label key={size} className="flex items-center">
-              <input
-                type="checkbox"
-                value={size}
-                checked={sizes.includes(size)}
-                onChange={handleSizeChange}
-                className="mr-2"
-              />
-              {size}
-            </label>
-          ))}
-        </div>
-
-        {/* Delivery Date Select with Placeholder */}
-        <select
-          value={deliveryDate}
-          onChange={(e) => setDeliveryDate(e.target.value)}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-          required
-        >
-          <option value="">Delivery Time (in days)</option>
-          {[...Array(10)].map((_, index) => (
-            <option key={index} value={index + 1}>
-              {index + 1} day{index + 1 > 1 ? 's' : ''}
-            </option>
-          ))}
-        </select>
-
-        {/* File Upload for Images */}
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleImageUpload}
-          className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
-          required
-        />
-        <div className="flex space-x-2 mt-2">
-          {images.length > 0 && images.map((image, index) => (
-            <ImagePreview key={index} image={image} index={index} />
-          ))}
-        </div>
-
-        {/* Bestseller Option */}
-        <div className="flex items-center">
+          {category && (
+            <select
+              value={subcategory}
+              onChange={(e) => setSubcategory(e.target.value)}
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+              required
+            >
+              <option value="">Select Subcategory</option>
+              {category === 'Men' && (
+                <>
+                  <option value="Topwear">Topwear</option>
+                  <option value="Bottomwear">Bottomwear</option>
+                  <option value="Winterwear">Winterwear</option>
+                </>
+              )}
+              {category === 'Women' && (
+                <>
+                  <option value="Topwear">Topwear</option>
+                  <option value="Bottomwear">Bottomwear</option>
+                  <option value="Winterwear">Winterwear</option>
+                </>
+              )}
+              {category === 'Kids' && (
+                <>
+                  <option value="Topwear">Topwear</option>
+                  <option value="Bottomwear">Bottomwear</option>
+                  <option value="Winterwear">Winterwear</option>
+                </>
+              )}
+            </select>
+          )}
+          <div className="flex space-x-4">
+            {['S', 'M', 'L', 'XL', 'XXL'].map((size) => (
+              <label key={size} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={size}
+                  checked={sizes.includes(size)}
+                  onChange={handleSizeChange}
+                  className="mr-2"
+                />
+                {size}
+              </label>
+            ))}
+          </div>
+          <select
+            value={deliveryDate}
+            onChange={(e) => setDeliveryDate(e.target.value)}
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
+          >
+            <option value="">Delivery Time (in days)</option>
+            {[...Array(10)].map((_, index) => (
+              <option key={index} value={index + 1}>
+                {index + 1} day{index + 1 > 1 ? 's' : ''}
+              </option>
+            ))}
+          </select>
           <input
-            type="checkbox"
-            checked={isBestseller}
-            onChange={() => setIsBestseller(!isBestseller)}
-            className="mr-2"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageUpload}
+            className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+            required
           />
-          <span>Bestseller</span>
+          <div className="flex space-x-2 mt-2">
+            {images.length > 0 &&
+              images.map((image, index) => <ImagePreview key={index} image={image} index={index} />)}
+          </div>
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              checked={isBestseller}
+              onChange={() => setIsBestseller(!isBestseller)}
+              className="mr-2"
+            />
+            <span>Mark as Bestseller</span>
+          </div>
+          <button
+            onClick={handleAddItem}
+            disabled={isLoading}
+            className="bg-blue-600 text-white p-3 rounded-md w-full hover:bg-blue-700 disabled:bg-gray-400"
+          >
+            {isLoading ? 'Adding...' : 'Add Item'}
+          </button>
         </div>
-
-        {/* Add Item Button */}
-        <button
-          onClick={handleAddItem}
-          disabled={isLoading}
-          className={`w-full py-3 ${isLoading ? 'bg-gray-400' : 'bg-green-600'} text-white rounded-md hover:bg-green-700 transition`}
-        >
-          {isLoading ? 'Adding...' : 'Add Item'}
-        </button>
       </div>
-    </div>
     </Layout>
   );
 }
