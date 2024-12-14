@@ -38,15 +38,30 @@ export const updatecart = async (req, res) => {
 };
 
 export const getcart = async (req, res) => {
-    try {
-        const {userid} = req.body;
-        const userdata = await usermodel.findById(userid);
-        res.json({ success: true, cart: userdata.cart });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal server error" });
-    }
-};
+          try {
+              const { userid } = req.body;
+      
+              // Validate that userid exists in the request
+              if (!userid) {
+                  return res.status(400).json({ success: false, message: "User ID is required" });
+              }
+      
+              // Fetch user data from the database
+              const userdata = await usermodel.findById(userid);
+      
+              // Check if the user exists
+              if (!userdata) {
+                  return res.status(404).json({ success: false, message: "User not found" });
+              }
+      
+              // Return the user's cart
+              res.json({ success: true, cart: userdata.cart });
+          } catch (error) {
+              console.error("Error fetching cart:", error);
+              res.status(500).json({ success: false, message: "Internal server error" });
+          }
+      };
+      
 export const placeorder = async (req, res) => {
     try {
       const { userid } = req.body;
@@ -111,13 +126,26 @@ catch(error){
 }
 }
 export const getorders = async (req, res) => {
-    try {
-        const {userid} = req.body;
-        const userdata = await usermodel.findById(userid);
-        res.json({ success: true, orders: userdata.orders });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: "Internal server error" });
-    }
+  try {
+      const { userid } = req.body;
+
+      // Validate that userid exists in the request
+      if (!userid) {
+          return res.status(400).json({ success: false, message: "User ID is required" });
+      }
+
+      // Fetch user data from the database
+      const userdata = await usermodel.findById(userid);
+
+      // Check if the user exists
+      if (!userdata) {
+          return res.status(404).json({ success: false, message: "User not found" });
+      }
+
+      // Return the user's orders
+      res.json({ success: true, orders: userdata.orders || [] });
+  } catch (error) {
+      console.error("Error fetching orders:", error);
+      res.status(500).json({ success: false, message: "Internal server error" });
+  }
 };
- 
