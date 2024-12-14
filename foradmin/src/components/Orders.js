@@ -1,6 +1,7 @@
 // src/components/Orders.js
 import React from 'react';
-
+import { Link } from 'react-router-dom';
+import Layout from './Layout';
 function Orders({ orders }) {
   // Separate active and delivered orders
   const currentDate = new Date();
@@ -8,6 +9,7 @@ function Orders({ orders }) {
   const deliveredProducts = orders.filter((order) => new Date(order.deldate) <= currentDate);
 
   return (
+    <Layout>
     <div className="mt-20 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4">Orders</h2>
 
@@ -21,6 +23,8 @@ function Orders({ orders }) {
               <p>Size: {order.size}</p>
               <p>Quantity: {order.quantity}</p>
               <p>Delivery Date: {new Date(order.deldate).toLocaleDateString()}</p>
+              
+              {/* Delivery Address */}
               <div className="mt-2">
                 <h5 className="font-semibold">Delivery Address:</h5>
                 <p>Name: {order.address.name}</p>
@@ -46,6 +50,8 @@ function Orders({ orders }) {
               <p>Size: {order.size}</p>
               <p>Quantity: {order.quantity}</p>
               <p>Delivered On: {new Date(order.deldate).toLocaleDateString()}</p>
+
+              {/* Delivery Address */}
               <div className="mt-2">
                 <h5 className="font-semibold">Delivery Address:</h5>
                 <p>Name: {order.address.name}</p>
@@ -60,7 +66,13 @@ function Orders({ orders }) {
           <p>No delivered products yet.</p>
         )}
       </div>
+
+      {/* Link to Analytics Page */}
+      <Link to="/analytics" className="mt-4 inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Go to Analytics
+      </Link>
     </div>
+    </Layout>
   );
 }
 

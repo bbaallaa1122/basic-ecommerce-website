@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css'; 
 import axios from 'axios'; 
+import Layout from './Layout';
 
 function Additem({ items, setItems }) {
   const [itemName, setItemName] = useState('');
@@ -136,6 +137,7 @@ function Additem({ items, setItems }) {
   }, []);
 
   return (
+     <Layout>
     <div className="mt-20 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-semibold mb-4">Add New Item</h2>
       <div className="space-y-4">
@@ -276,6 +278,7 @@ function Additem({ items, setItems }) {
         </button>
       </div>
     </div>
+    </Layout>
   );
 }
 
