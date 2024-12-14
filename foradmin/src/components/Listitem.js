@@ -23,11 +23,17 @@ function Listitem() {
     const fetchItems = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get('http://localhost:5000/api/products/listproduct');
+        const response = await axios.get('http://localhost:5000/api/products/listproductadmin',{
+          headers:{
+            token,
+          }
+        });
+        console.log(response.data);
         setItems(response.data.products);
         updateProductCount(response.data.products); // Update the product count dynamically
       } catch (error) {
         toast.error('Error fetching items');
+        console.log(error.message);
       } finally {
         setIsLoading(false);
       }

@@ -11,7 +11,7 @@ const Login = ({ setToken }) => {
     e.preventDefault();
     
     try {
-      const response =await axios.post('http://localhost:5000/api/users/adminlogin' , {
+      const response =await axios.post('http://localhost:5000/api/admin/loginadmin' , {
         email,
         password
       });

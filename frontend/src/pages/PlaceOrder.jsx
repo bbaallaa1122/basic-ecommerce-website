@@ -65,6 +65,7 @@ const Placeorder = () => {
               quantity: cart[ids][sizes],
               address: { ...deliveryInfo }, // Spread delivery info into address
               deldate,
+              admin:product.admin,
             });
           }
         }

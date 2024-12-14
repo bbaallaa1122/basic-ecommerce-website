@@ -2,7 +2,6 @@ import usermodel from '../models/usermodel.js'
 import validator from 'validator';
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcryptjs';
-import gOPD from 'gopd';
 
 const createtoken=(id)=>{
   return jwt.sign({id},process.env.jsonsecret);
@@ -49,19 +48,6 @@ const loginuser= async(req,res)=>{
     return res.json({success:false,message:error.message});
   }
 }
-const adminlogin=async(req,res)=>{
-try{
-     const{email,password}=req.body;
-     if(email===process.env.adminemail && password==process.env.adminpassword){
-      const token=jwt.sign(email+password,process.env.jsonsecret);
-        return res.json({success:true,token});
-     }
-     else{
-      res.json({success:false,message:"enter valid credentials"});
-     }}
-catch(error){
-  return res.json({success:false,message:error.message});
-}
-}
 
-export {registeruser,loginuser,adminlogin};
+
+export {registeruser,loginuser};

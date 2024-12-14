@@ -8,17 +8,17 @@ import productrouter from './routes/productroutes.js';
 import cartrouter from './routes/cartrouter.js';
 import wishlistrouter from './routes/wishlistrouter.js';
 import orderrouter from './routes/orderroutes.js';
+import adminrouter from './routes/adminroutes.js';
 const app=express();
 const port=5000;
 connectdb();
 connectcloud();
 app.use(express.json());
 app.use(cors());
-
 app.use('/api/users/',userroutes);
 app.use('/api/products/',productrouter);
 app.use('/api/cart/',cartrouter);
 app.use('/api/wishlist/',wishlistrouter);
 app.use('/api/orders/',orderrouter);
-
+app.use('/api/admin/',adminrouter);
 app.listen(port,()=>console.log("server is running on port 5000"));

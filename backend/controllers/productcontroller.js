@@ -1,8 +1,10 @@
 import cloudinary from 'cloudinary';
 import Product from '../models/productmodel.js';
+import adminmodel from '../models/adminmodel.js';
 export const addproduct = async (req, res) => {
   try {
     const { name, description, price, category, subcategory, size, bestseller, deltime} = req.body;
+    const adminid=req.body.adminid;
     const imageUrls = [];
     if (req.files) {
       for (let key in req.files) {
@@ -14,21 +16,26 @@ export const addproduct = async (req, res) => {
         }
       }
     }
-
+    console.log(adminid);
+    console.log(typeof(adminid));
     const newProduct = new Product({
       name,
       description,
-      price: Number(price), 
+      price: Number(price),
       image: imageUrls,
       category,
       subcategory,
       size: JSON.parse(size),
       date: Date.now(),
-      bestseller: bestseller === 'true', 
+      bestseller: bestseller === "true",
       deltime,
+      admin:adminid,
     });
-
+    
     await newProduct.save();
+    const admin = await adminmodel.findById(adminid);
+    admin.products.push(newProduct._id); 
+    await admin.save();
     return res.json({
       success: true,
       message: "Item added successfully!", 
@@ -52,26 +59,45 @@ export const listproduct = async (req, res) => {
     res.json({ message: 'Error fetching products' });
   }
 };
+
 export const delproduct = async (req, res) => {
   try {
-    const { itemId } = req.body; 
+    const { adminid, itemId } = req.body; 
     console.log("Product ID to delete:", itemId); 
 
+    // Find the admin by adminid
+    const admin = await adminmodel.findById(adminid);
+
+    if (!admin) {
+      return res.json({ success: false, message: 'Admin not found' });
+    }
+
+    // Check if the product is in the admin's products array
+    if (!admin.products.includes(itemId)) {
+      return res.json({ success: false, message: 'Product does not belong to this admin' });
+    }
+
+    // Delete the product from the Product model
     const deletedProduct = await Product.findByIdAndDelete(itemId);
-   
+
     if (!deletedProduct) {
       return res.json({ success: false, message: 'Product not found' });
     }
 
+    // Remove the product ID from the admin's products array
+    admin.products = admin.products.filter(productId => productId.toString() !== itemId);
+    await admin.save();
+
     res.json({
       success: true,
-      message: 'Product deleted successfully!',
+      message: 'Product deleted successfully and removed from admin products list!',
     });
   } catch (err) {
     console.log(err);
     res.json({ success: false, message: 'Error deleting product' });
   }
 };
+
 
 
 
@@ -94,5 +120,23 @@ export const productinfo = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: "Error fetching product info." });
+  }
+};
+export const listproductadmin = async (req, res) => {
+  try {
+    // Get the adminid from the request body
+    const adminid = req.body.adminid;
+
+    // Fetch products from the Product model where the admin field matches the adminid
+    const products = await Product.find({ admin: adminid });
+
+    // Send the filtere.d products as the response
+    return res.json({
+      message: 'Products retrieved successfully!',
+      products
+    });
+  } catch (err) {
+    console.log(err);
+    return res.json({ success: false, message: 'Error fetching products' });
   }
 };

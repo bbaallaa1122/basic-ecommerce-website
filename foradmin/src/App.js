@@ -20,8 +20,7 @@ function App() {
     Women: 0,
     Kids: 0,
   });
-
-  // Retrieve token from local storage on initial load
+  
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
@@ -40,7 +39,7 @@ function App() {
             token,
           },
         });
-
+      console.log(res.data);
         if (res.data.success) {
           setOrders(res.data.orders); // Set the orders state
         } else {
@@ -63,6 +62,7 @@ function App() {
   // Logout function to clear the token
   const logout = () => {
     setToken(null);
+    setOrders([]); 
     localStorage.removeItem('token'); // Remove token from local storage
   };
 

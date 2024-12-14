@@ -16,7 +16,6 @@ function Additem({ items, setItems }) {
   const [isBestseller, setIsBestseller] = useState(false); 
   const [isLoading, setIsLoading] = useState(false); 
   const token = localStorage.getItem('token'); 
-
   const resetForm = () => {
     setItemName('');
     setItemDescription('');
@@ -74,6 +73,7 @@ function Additem({ items, setItems }) {
         },
       });
       const data = response.data;
+      console.log(data.product);
       if (data.success) {
         setItems((prevItems) => [...prevItems, data.product]); 
         toast.success(data.message || "Item added successfully!");
