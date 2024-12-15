@@ -4,19 +4,19 @@ import { FaClipboardList, FaBoxOpen, FaChartLine } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom'; // For navigation
 
 const Adminpanel = () => {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
-  // Navigate to Manage Products Page
+ 
   const handleManageProducts = () => {
     navigate('/listitems');
   };
 
-  // Navigate to View Orders Page
+  
   const handleViewOrders = () => {
     navigate('/orders');
   };
 
-  // Navigate to Analytics Page
+  
   const handleAnalytics = () => {
     navigate('/analytics');
   };
@@ -27,7 +27,7 @@ const Adminpanel = () => {
         <h1 className="text-4xl font-bold text-center mb-4">Welcome to the Admin Panel</h1>
         <p className="text-xl text-center mb-8">Manage your items and orders from here.</p>
 
-        {/* Quick Action Buttons */}
+       
         <div className="flex justify-center items-center gap-6 mb-12">
           <div className="bg-blue-600 text-white p-6 rounded-lg shadow-lg text-center flex flex-col items-center">
             <FaClipboardList size={30} />

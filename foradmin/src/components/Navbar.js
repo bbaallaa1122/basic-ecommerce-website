@@ -12,7 +12,7 @@ const Navbar = ({ logout }) => {
 
   return (
     <div className="flex justify-between items-center p-4 bg-gray-500 text-white fixed top-0 left-0 right-0 z-10 shadow-md">
-      {/* Logo Image */}
+      
       <div className="flex items-center">
         <img
           src={basic}
@@ -21,9 +21,9 @@ const Navbar = ({ logout }) => {
         />
       </div>
 
-      {/* Navigation Links */}
+    
       <div className="flex items-center space-x-6">
-        {/* Home Icon */}
+       
         <Link
           to="/"
           className="flex items-center p-2 hover:bg-gray-700 rounded-md transition"

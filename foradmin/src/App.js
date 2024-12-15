@@ -6,14 +6,14 @@ import Orders from './components/Orders';
 import Navbar from './components/Navbar';
 import Adminpanel from './components/Adminpanel';
 import Login from './components/Login';
-import Analytics from './components/Analytics'; // Import Analytics
+import Analytics from './components/Analytics'; 
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 function App() {
-  const [items, setItems] = useState([]); // Items state to track the items
-  const [orders, setOrders] = useState([]); // Orders state to track orders
+  const [items, setItems] = useState([]); 
+  const [orders, setOrders] = useState([]); 
   const [token, setToken] = useState( localStorage.getItem('token'));
   
   useEffect(() => {
@@ -23,7 +23,7 @@ function App() {
     }
   }, []);
 
-  // Fetch orders only if a token is available
+  
   useEffect(() => {
     async function getOrders() {
       if (!token) return;
@@ -36,7 +36,7 @@ function App() {
         });
       console.log(res.data);
         if (res.data.success) {
-          setOrders(res.data.orders); // Set the orders state
+          setOrders(res.data.orders); 
         } else {
           console.log(res.data.message);
         }
@@ -48,24 +48,19 @@ function App() {
     getOrders();
   }, [token]);
 
-  // Login function to set the token
+  
   const login = (newToken) => {
     setToken(newToken);
     localStorage.setItem('token', newToken);
-     // Save token to local storage
+     
   };
 
-  // Logout function to clear the token
+  
   const logout = () => {
     setToken(null);
     setOrders([]); 
-    localStorage.removeItem('token'); // Remove token from local storage
+    localStorage.removeItem('token'); 
   };
-
-  // Update the product count based on category (Men, Women, Kids)
-
-
-  // Fetch items from API and update the product count
   useEffect(() => {
     const fetchItems = async () => {
         try {
@@ -82,7 +77,7 @@ function App() {
         }
     };
     fetchItems();
-  }, []); // Run this effect only once on component mount
+  }, []); 
 
   return (
     <div className="min-h-screen bg-gray-100">

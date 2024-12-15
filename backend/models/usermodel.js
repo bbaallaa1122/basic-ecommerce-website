@@ -5,7 +5,7 @@ const userschema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     cart: { type: Object, default: {}, minimize: false }, 
-    wishlist: { type: Array, default: [],minimize: false  }, 
+    wishlist: { type: Array, default: [],minimize: false }, 
     orders:{ type:Array,default:[] ,minimize:false},
 }, { minimize: false }); 
 

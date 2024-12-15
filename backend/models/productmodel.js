@@ -11,7 +11,7 @@ const productschema = new mongoose.Schema({
   date: { type: Date, required: true },
   bestseller: { type: Boolean },
   deltime: { type: Number, required: true },
-  admin: { type:String, required: true }, // Reference to the Admin model
+  admin: { type:String, required: true }, 
 });
 
 const productmodel = mongoose.model("Product", productschema);

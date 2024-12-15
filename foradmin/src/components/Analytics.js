@@ -5,7 +5,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 function Analytics({ orders}) {
   const token = localStorage.getItem('token');
-  // Separate active and delivered orders
   const currentDate = new Date();
   const activeOrders = orders.filter((order) => new Date(order.deldate) > currentDate);
   const deliveredProducts = orders.filter((order) => new Date(order.deldate) <= currentDate);
@@ -14,7 +13,7 @@ function Analytics({ orders}) {
       Women: 0,
       Kids: 0,
     });
-  // Calculate totals for each category
+  
   const totalActiveOrders = activeOrders.length;
   const totalDeliveredOrders = deliveredProducts.length;
   const updateProductCount = (products) => {
@@ -28,7 +27,7 @@ function Analytics({ orders}) {
         count.Kids++;
       }
     });
-    setCategoryProductCount(count); // Update the state with the new counts
+    setCategoryProductCount(count); 
   };
   useEffect(() => {
     const fetchItems = async () => {
@@ -53,7 +52,7 @@ function Analytics({ orders}) {
 
         <h2 className="text-2xl font-semibold mb-6 text-gray-800">Analytics</h2>
 
-        {/* Orders Section */}
+        
         <div className="mb-8">
           <h3 className="text-xl font-semibold text-gray-700 mb-4">Order Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -68,7 +67,7 @@ function Analytics({ orders}) {
           </div>
         </div>
 
-        {/* Items Added Section */}
+       
         <div>
           <h3 className="text-xl font-semibold text-gray-700 mb-4">Items Added Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

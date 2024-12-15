@@ -5,20 +5,20 @@ const Contact = () => {
   return (
     <div className=" pt-20 min-h-screen bg-gray-100 flex justify-center items-center p-6">
       <div className="bg-white max-w-5xl w-full rounded-lg shadow-lg grid grid-cols-1 md:grid-cols-2">
-        {/* Image Section */}
+       
         <div className="relative">
           <img
-            src={assets.contact_img} // Replace with your image URL
+            src={assets.contact_img} 
             alt="Contact Us"
             className="w-full h-full object-cover rounded-l-lg"
           />
         </div>
 
-        {/* Form Section */}
+        
         <div className="p-8">
           <h1 className="text-3xl font-bold mb-6">Contact Us</h1>
 
-          {/* Contact Form */}
+       
           <form className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm text-gray-700 mb-2">
@@ -61,7 +61,7 @@ const Contact = () => {
             </button>
           </form>
 
-          {/* Contact Details */}
+          
           <div className="mt-8 space-y-4">
             <p className="text-gray-800">
               <strong>Contact:</strong> hi@basic.com
@@ -71,13 +71,13 @@ const Contact = () => {
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-500 hover:text-gray-800">
-                <i className="fab fa-facebook-f"></i> {/* Replace with icons */}
+                <i className="fab fa-facebook-f"></i> 
               </a>
               <a href="#" className="text-gray-500 hover:text-gray-800">
-                <i className="fab fa-twitter"></i> {/* Replace with icons */}
+                <i className="fab fa-twitter"></i> 
               </a>
               <a href="#" className="text-gray-500 hover:text-gray-800">
-                <i className="fab fa-instagram"></i> {/* Replace with icons */}
+                <i className="fab fa-instagram"></i>
               </a>
             </div>
           </div>

@@ -3,13 +3,12 @@ import ordermodel from "../models/ordermodel.js";
 
 export const allorders = async (req, res) => {
   try {
-    const { adminid } = req.body; // Extract adminid from the request body
-    // Find orders where the admin field matches the adminid
+    const { adminid } = req.body; 
+   
     const orders = await ordermodel.find({ admin: adminid });
     res.json({ success: true, orders });
   } catch (error) {
     console.error("Error fetching all orders:", error.message);
-    // Send an error response
     res.json({ success: false, message: error.message });
   }
 };
@@ -19,11 +18,10 @@ export const updateorders = async (req, res) => {
       const { userid, tempOrders } = req.body;
       const savedOrders = [];
       for (const order of tempOrders) {
-        // Ensure deldate is a valid date
         const deldate = new Date(order.deldate);
         
         if (isNaN(deldate.getTime())) {
-          // If the date is invalid, return an error
+          
           console.log('Invalid delivery date:', order.deldate);
           return res.status(400).json({ success: false, message: 'Invalid delivery date' });
         }
@@ -63,8 +61,6 @@ export const cancelorder = async (req, res) => {
     if (index === undefined) {
       return res.status(400).json({ success: false, message: 'Index is required' });
     }
-
-    // Fetch all orders for the user
     const userOrders = await ordermodel.find({ userid });
     console.log('User Orders:', userOrders);
     if (!userOrders || userOrders.length === 0) {

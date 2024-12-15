@@ -5,7 +5,6 @@ import Layout from './Layout';
 import { FaTruck, FaBox, FaCheckCircle, FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from 'react-icons/fa';
 
 function Orders({ orders }) {
-  // Separate active and delivered orders
   const currentDate = new Date();
   const activeOrders = orders.filter((order) => new Date(order.deldate) > currentDate);
   const deliveredProducts = orders.filter((order) => new Date(order.deldate) <= currentDate);
@@ -15,7 +14,7 @@ function Orders({ orders }) {
       <div className="mt-20 p-6 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-6 text-gray-700">Orders</h2>
 
-        {/* Active Orders Section */}
+       
         <div className="mb-8">
           <h3 className="text-xl font-semibold text-blue-600 mb-4 flex items-center">
             <FaTruck className="mr-2" />
@@ -34,7 +33,7 @@ function Orders({ orders }) {
                   Delivery Date: <span className="font-semibold">{new Date(order.deldate).toLocaleDateString()}</span>
                 </p>
 
-                {/* Delivery Address */}
+                
                 <div className="mt-3 text-sm">
                   <h5 className="font-semibold text-gray-700">
                     <FaMapMarkerAlt className="inline-block text-green-500 mr-2" />
@@ -59,7 +58,7 @@ function Orders({ orders }) {
           )}
         </div>
 
-        {/* Delivered Products Section */}
+        
         <div>
           <h3 className="text-xl font-semibold text-green-600 mb-4 flex items-center">
             <FaCheckCircle className="mr-2" />
@@ -78,7 +77,7 @@ function Orders({ orders }) {
                   Delivered On: <span className="font-semibold">{new Date(order.deldate).toLocaleDateString()}</span>
                 </p>
 
-                {/* Delivery Address */}
+                
                 <div className="mt-3 text-sm">
                   <h5 className="font-semibold text-gray-700">
                     <FaMapMarkerAlt className="inline-block text-green-500 mr-2" />
@@ -103,7 +102,7 @@ function Orders({ orders }) {
           )}
         </div>
 
-        {/* Link to Analytics Page */}
+        
         <div className="mt-8 text-center">
           <Link
             to="/analytics"

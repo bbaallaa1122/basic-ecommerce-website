@@ -35,35 +35,33 @@ const Placeorder = () => {
   const handlePlaceOrder = async () => {
     const { name, address, phone, email, city, postalCode, country } = deliveryInfo;
   
-    // Validate delivery information
     if (!name || !address || !phone || !email || !city || !postalCode || !country) {
       toast.warn('Please fill in all delivery information.');
       return;
     }
-  
-    // Validate payment selection
+
     if (!paymentSelected) {
       toast.warn('Please select a payment option.');
       return;
     }
   
     try {
-      // Construct orders from the cart
+      
       const tempOrders = [];
       for (const ids in cart) {
         for (const sizes in cart[ids]) {
           const today = new Date();
           const product = products.find((item) => item._id === ids);
           if (product) {
-            const del = product.deltime; // Fetch delivery time from product
+            const del = product.deltime; 
             today.setDate(today.getDate() + del);
-            const deldate = today.toISOString().split('T')[0]; // Format delivery date
+            const deldate = today.toISOString().split('T')[0]; 
   
             tempOrders.push({
               productid: ids,
               size: sizes,
               quantity: cart[ids][sizes],
-              address: { ...deliveryInfo }, // Spread delivery info into address
+              address: { ...deliveryInfo }, 
               deldate,
               admin:product.admin,
             });

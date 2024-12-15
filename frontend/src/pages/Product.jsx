@@ -33,11 +33,11 @@ const Product = () => {
 
   return (
     <div className="pt-20 px-8">
-      {/* Product Details Section */}
+      
       <div className="flex flex-row gap-10">
-        {/* Product Images */}
+        
         <div className="lg:w-1/3 flex flex-col gap-4">
-          {/* Main Image */}
+          
           <div className="border rounded-lg overflow-hidden">
             <img
               src={selectedImage}
@@ -45,7 +45,7 @@ const Product = () => {
               className="w-full h-auto object-cover"
             />
           </div>
-          {/* Thumbnails */}
+          
           <div className="flex gap-2">
             {prod.image.map((image, index) => (
               <img
@@ -60,12 +60,12 @@ const Product = () => {
           </div>
         </div>
 
-        {/* Product Info */}
+        
         <div className="w-1/2">
           <h1 className="text-3xl font-bold mb-2">{prod.name}</h1>
           <p className="text-xl font-medium text-gray-600">${prod.price}</p>
           <p className="text-gray-500 my-4">{prod.description}</p>
-          {/* Size Selector */}
+        
           <div className="mb-4">
             <label className="block font-medium mb-2">Select Size</label>
             <div className="flex gap-2">
@@ -83,7 +83,7 @@ const Product = () => {
             </div>
           </div>
 
-          {/* Buttons */}
+          
           <div className="flex gap-4">
             <button
               onClick={

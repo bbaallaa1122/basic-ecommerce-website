@@ -8,7 +8,7 @@ const Cart = () => {
   const { cart, products, updatecart, curr, delfee, updateamount, token } = useContext(shopcontext);
   const navigate = useNavigate();
 
-  // Redirect to login page if no token is found
+
   useEffect(() => {
     if (!token) {
       navigate('/auth');
@@ -38,8 +38,7 @@ const Cart = () => {
       <div className="space-y-6">
         {tempcart.map((item) => {
           const prod = products.find((product) => product._id === item.id);
-          if (!prod) return null; // Prevent errors if the product is not found
-
+          if (!prod) return null; 
           const price = prod.price * item.quantity;
           totcost += price;
           

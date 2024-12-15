@@ -8,10 +8,10 @@ const Wishlist = () => {
   const { token, wishlist, products } = useContext(shopcontext);
   const navigate = useNavigate();
 
-  // Filter wishlist items
+  
   const wishitems = products.filter((item) => wishlist.includes(item._id));
 
-  // Redirect to login if no token
+  
   useEffect(() => {
     if (!token) {
       navigate('/auth');
@@ -21,7 +21,7 @@ const Wishlist = () => {
   return (
     token ? (
       <div className="py-20 px-8">
-        {/* Wishlist Heading */}
+       
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold text-gray-800">My Wishlist</h1>
           <p className="text-gray-600 mt-2">
@@ -31,7 +31,7 @@ const Wishlist = () => {
           </p>
         </div>
 
-        {/* Wishlist Items */}
+        
         {wishitems.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {wishitems.map((item) => (
@@ -56,7 +56,7 @@ const Wishlist = () => {
           </div>
         )}
       </div>
-    ) : null // If no token, render nothing until redirected
+    ) : null 
   );
 };
 

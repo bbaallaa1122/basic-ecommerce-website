@@ -6,13 +6,13 @@ import axios from 'axios';
 import Layout from './Layout';
 
 function Additem({ items, setItems }) {
-  const location = useLocation(); // Retrieve location state
+  const location = useLocation();
   const navigate = useNavigate();
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
   const [images, setImages] = useState([]);
-  const [category, setCategory] = useState(location.state?.category || ''); // Initialize with location state
+  const [category, setCategory] = useState(location.state?.category || '');
   const [subcategory, setSubcategory] = useState(location.state?.subcategory || '');
   const [sizes, setSizes] = useState([]);
   const [deliveryDate, setDeliveryDate] = useState(1);

@@ -28,7 +28,6 @@ export const updatecart = async (req, res) => {
         const usercart = { ...userdata.cart };
         if (!usercart[itemid]) usercart[itemid] = {};
         usercart[itemid][size] = quantity;
-
         await usermodel.findByIdAndUpdate(userid, { cart: usercart });
         res.json({ success: true, message: "Cart updated successfully" });
     } catch (error) {
@@ -41,20 +40,17 @@ export const getcart = async (req, res) => {
           try {
               const { userid } = req.body;
       
-              // Validate that userid exists in the request
               if (!userid) {
                   return res.status(400).json({ success: false, message: "User ID is required" });
               }
+       const userdata = await usermodel.findById(userid);
       
-              // Fetch user data from the database
-              const userdata = await usermodel.findById(userid);
-      
-              // Check if the user exists
+             
               if (!userdata) {
                   return res.status(404).json({ success: false, message: "User not found" });
               }
       
-              // Return the user's cart
+              
               res.json({ success: true, cart: userdata.cart });
           } catch (error) {
               console.error("Error fetching cart:", error);
@@ -77,13 +73,11 @@ export const placeorder = async (req, res) => {
       for (const ids in cart) {
         for (const sizes in cart[ids]) {
           const today = new Date();
-  
-          // Fetch the product by ID
           const product = await productmodel.findById(ids);
           if (product) {
             const del = product.deltime;
   
-            // Check if `del` is a valid number before modifying the date
+           
             if (typeof del === 'number' && !isNaN(del)) {
               today.setDate(today.getDate() + del);
               const date = today.toISOString().split('T')[0];
@@ -101,8 +95,6 @@ export const placeorder = async (req, res) => {
           }
         }
       }
-
-      // Update user's orders and cart
       await usermodel.findByIdAndUpdate(userid, { orders: temporders });
       await usermodel.findByIdAndUpdate(userid, { cart: {} });
       res.json({ success: true,message: 'Orders placed successfully' });
@@ -129,20 +121,16 @@ export const getorders = async (req, res) => {
   try {
       const { userid } = req.body;
 
-      // Validate that userid exists in the request
+     
       if (!userid) {
           return res.status(400).json({ success: false, message: "User ID is required" });
       }
 
-      // Fetch user data from the database
+      
       const userdata = await usermodel.findById(userid);
-
-      // Check if the user exists
       if (!userdata) {
           return res.status(404).json({ success: false, message: "User not found" });
       }
-
-      // Return the user's orders
       res.json({ success: true, orders: userdata.orders || [] });
   } catch (error) {
       console.error("Error fetching orders:", error);

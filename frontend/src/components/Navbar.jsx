@@ -10,7 +10,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const {setname,setCart,setemail,setpassword,cartcount, token, settoken } = useContext(shopcontext);
-    // Handle logout
+    
     const handleLogout = () => {
       settoken('');   
       setname('');  
@@ -26,12 +26,12 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 w-full z-50 bg-white shadow-md">
       <div className="flex items-center justify-between px-5 py-4 font-medium">
-        {/* Logo */}
+        
         <NavLink to="/home">
           <img src={image.Basics} alt="basic" className="w-36 h-17" />
         </NavLink>
 
-        {/* Navigation Links */}
+        
         <ul className="hidden md:flex gap-10 text-sm text-gray-700">
           {['HOME', 'MEN', 'WOMEN', 'KIDS'].map((item, index) => (
             <li key={index}>
@@ -48,9 +48,9 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* Profile and Other Links */}
+       
         <ul className="flex gap-8 text-sm text-gray-700 items-center">
-          {/* Profile Dropdown */}
+          
           <li className="relative group">
             <p className="cursor-pointer text-3xl hover:scale-110">
               <CgProfile className="text-2xl" />
@@ -84,7 +84,7 @@ const Navbar = () => {
               </NavLink>
               {token && (
                 <p
-                  onClick={handleLogout} // Handle logout on click
+                  onClick={handleLogout} 
                   className="block px-4 py-2 hover:bg-gray-100 hover:text-black cursor-pointer"
                 >
                   Logout
@@ -93,7 +93,7 @@ const Navbar = () => {
             </div>
           </li>
 
-          {/* Wishlist */}
+          
           <li>
             <NavLink
               to="/wishlist"
@@ -108,7 +108,7 @@ const Navbar = () => {
             </NavLink>
           </li>
 
-          {/* Cart */}
+         
           <li>
             <NavLink
               to="/cart"

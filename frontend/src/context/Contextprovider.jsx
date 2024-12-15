@@ -19,10 +19,7 @@ export function Contextprovider(props) {
   const [name, setname] = useState('');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
-  // Initialize token from localStorage, if available
   const [token, settoken] = useState(localStorage.getItem('token') || '');
-  
-  // Update localStorage when token changes
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
@@ -31,7 +28,7 @@ export function Contextprovider(props) {
       getorders({token});
       console.log(backend);
     } else {
-      localStorage.removeItem('token');  // Remove token from localStorage if it's empty
+      localStorage.removeItem('token');  
     }
   }, [token]);
 
@@ -52,10 +49,10 @@ export function Contextprovider(props) {
   }
 
   async function addcart({ id, size }) {
-    // Clone the cart safely
+   
     let cartdata = structuredClone(cart);
   
-    // Update the cart locally
+    
     if (cartdata[id]) {
       if (cartdata[id][size]) cartdata[id][size] += 1;
       else cartdata[id][size] = 1;
@@ -65,11 +62,11 @@ export function Contextprovider(props) {
     }
     setCart(cartdata);
   
-    // Prepare data for the API request
+   
     const itemid = id;
   
     try {
-      // Send the updated cart item to the backend
+      
       const res = await axios.post(`${backend}/api/cart/addcart`, { itemid, size }, {
         headers: {
           token, 
@@ -77,10 +74,10 @@ export function Contextprovider(props) {
       });
     console.log(res.data);
       if (res.data.success === false) {
-        console.log(res.data.message); // Log backend message for debugging
+        console.log(res.data.message); 
       }
     } catch (error) {
-      console.error('Failed to add item to cart:', error.message); // Log Axios errors
+      console.error('Failed to add item to cart:', error.message); 
     }
   }
   
@@ -121,18 +118,18 @@ export function Contextprovider(props) {
   }
   async function cancelorders(index) {
     try {
-      // Update local state to optimistically remove the order
+    
       let updatedOrders = [...orders];
       updatedOrders.splice(index, 1);
       setOrders(updatedOrders);
   
-      // First API call: Cancel order from the cart
+   
       const cartResponse = await axios.post(
         `${backend}/api/cart/cancelorder`,
         { index },
         {
           headers: {
-            token, // Ensure the token is valid
+            token,
           },
         }
       );
@@ -143,7 +140,7 @@ export function Contextprovider(props) {
         console.log('Cart cancellation successful:', cartResponse.data);
       }
   
-      // Second API call: Cancel order from the orders database
+     
       const ordersResponse = await axios.post(
         `${backend}/api/orders/cancelorder`,
         { index },

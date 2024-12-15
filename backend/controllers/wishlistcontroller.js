@@ -4,13 +4,13 @@ export const additem = async (req, res) => {
     try {
         const { userid, id } = req.body;
 
-        // Fetch user data
+        
         const userdata = await usermodel.findById(userid);
         if (!userdata) {
             return res.json({ success: false, message: "User not found" });
         }
 
-        // Update wishlist
+       
         const wish = userdata.wishlist || [];
         if (!wish.includes(id)) {
             wish.push(id);
@@ -28,13 +28,13 @@ export const removeitem = async (req, res) => {
     try {
         const { userid, id } = req.body;
 
-        // Fetch user data
+        
         const userdata = await usermodel.findById(userid);
         if (!userdata) {
             return res.json({ success: false, message: "User not found" });
         }
 
-        // Remove item from wishlist
+       
         const wish = userdata.wishlist || [];
         const index = wish.indexOf(id);
         if (index > -1) {
@@ -53,7 +53,7 @@ export const getitem = async (req, res) => {
     try {
         const { userid } = req.body;
 
-        // Fetch user data
+       
         const userdata = await usermodel.findById(userid);
         if (!userdata) {
             return res.json({ success: false, message: "User not found" });

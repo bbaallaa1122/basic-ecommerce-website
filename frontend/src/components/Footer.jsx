@@ -1,12 +1,12 @@
 import React from 'react';
-import { assets } from '../assests/assets'; // Ensure path to assets is correct
+import { assets } from '../assests/assets';
 
 const Footer = () => {
   return (
     <div className="py-10 bg-gray-100">
-      {/* Top Section */}
+      
       <div className="flex flex-wrap justify-around gap-6 max-w-6xl mx-auto mb-10">
-        {/* Easy Exchange */}
+       
         <div className="flex flex-col items-center text-center">
           <img src={assets.exchange_icon} alt="Easy Exchange Icon" className="w-12 h-12 mb-2" />
           <p className="text-sm font-semibold text-gray-700">EASY EXCHANGE</p>
@@ -15,7 +15,7 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Contact and Support */}
+        
         <div className="flex flex-col items-center text-center">
           <img src={assets.support_img} alt="Contact and Support Icon" className="w-12 h-12 mb-2" />
           <p className="text-sm font-semibold text-gray-700">CONTACT AND SUPPORT</p>
@@ -24,7 +24,7 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Best Quality */}
+       
         <div className="flex flex-col items-center text-center">
           <img src={assets.quality_icon} alt="Best Quality Icon" className="w-12 h-12 mb-2" />
           <p className="text-sm font-semibold text-gray-700">BEST QUALITY</p>
@@ -34,7 +34,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Newsletter Section */}
+      
       <div className="bg-gray-100 py-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-lg font-bold text-gray-700 mb-4">Subscribe to Our Newsletter</h2>
@@ -58,7 +58,7 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Footer Bottom Section */}
+      
       <div className="text-center text-gray-500 mt-8 text-sm">
         © 2024 bAsIc. All rights reserved.
       </div>

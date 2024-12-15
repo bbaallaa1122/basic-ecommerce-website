@@ -65,26 +65,25 @@ export const delproduct = async (req, res) => {
     const { adminid, itemId } = req.body; 
     console.log("Product ID to delete:", itemId); 
 
-    // Find the admin by adminid
+    
     const admin = await adminmodel.findById(adminid);
-
     if (!admin) {
       return res.json({ success: false, message: 'Admin not found' });
     }
 
-    // Check if the product is in the admin's products array
+   
     if (!admin.products.includes(itemId)) {
       return res.json({ success: false, message: 'Product does not belong to this admin' });
     }
 
-    // Delete the product from the Product model
+   
     const deletedProduct = await Product.findByIdAndDelete(itemId);
 
     if (!deletedProduct) {
       return res.json({ success: false, message: 'Product not found' });
     }
 
-    // Remove the product ID from the admin's products array
+   
     admin.products = admin.products.filter(productId => productId.toString() !== itemId);
     await admin.save();
 
@@ -124,13 +123,13 @@ export const productinfo = async (req, res) => {
 };
 export const listproductadmin = async (req, res) => {
   try {
-    // Get the adminid from the request body
+   
     const adminid = req.body.adminid;
 
-    // Fetch products from the Product model where the admin field matches the adminid
+  
     const products = await Product.find({ admin: adminid });
 
-    // Send the filtere.d products as the response
+   
     return res.json({
       success:true,
       message: 'Products retrieved successfully!',
